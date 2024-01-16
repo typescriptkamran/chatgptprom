@@ -1,22 +1,16 @@
-import Feed from "@/components/Feed"
+import { promises as fs } from 'fs';
 
-const home = () => {
+async function Page() {
+  const file = await fs.readFile(process.cwd() + '/src/data/data.json', 'utf8');
+  const Data = JSON.parse(file);
+
   return (
-    <section className="w-full text-center flexcol items-center justify-center">
-      <h1 className="head_text text-center">
-        Discover and share
-        <br className="max-md:hidden"/>
-        <span className="orange_gradient">
-        AI Poweered Prompts
-        </span>
-      </h1>
-      <p className="desc text-center">
-        Pomptopia is place you share power prompts for AI prompts.
-      </p>
-      <Feed />
-
-    </section>
-  )
+    <div>
+      <h1>{Data.title}</h1>
+      <p>{Data.content}</p>
+    </div>
+  );
 }
 
-export default home
+export default Page
+
