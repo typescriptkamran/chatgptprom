@@ -14,14 +14,14 @@ const Sidebar = () => {
   return (
     <div className="h-screen flex border-solid border-r-2 border-r-black p-3">
       <Accordion type="single" collapsible className="w-full">
-        {Categries.map(({ name, path: mainPath, subCategories }, index) => {
+        {Categries.map(({ name, path: category, subCategories }, index) => {
           return (
             <AccordionItem value = {`item-${index}`}>
               <AccordionTrigger>{name}</AccordionTrigger>
               
-                {subCategories.map(({name1, path})=> {
+                {subCategories.map(({name1, path: subCategory})=> {
                   return (<AccordionContent>
-                    <Link href={`/${mainPath}/${path}`}>
+                    <Link href={`/${category}/${subCategory}`}>
                     {name1}
                     </Link>      
                     </AccordionContent>)
