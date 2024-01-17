@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Inter, Single_Day } from 'next/font/google'
 import './globals.css'
 import Sidebar from '@/components/Sidebar'
+import NavBar from '@/components/NavBar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,7 +21,8 @@ export default function RootLayout({
     <html lang="en">
       <body className='w-full h-full wp-5 m-5'>
        <div className='p-5 m-5'>
-        <Nav />
+        <NavBar />
+        {/* <Nav /> */}
         <div className='flex gap-1'>
         <Sidebar />
 
