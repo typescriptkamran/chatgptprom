@@ -3,18 +3,19 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import ButtonMain from './ButtonMain'
+import { Product } from '@/data/Categories'
+import Link from 'next/link'
 
 
-const Cards = ({params}) => {
-  let router = useRouter()
+const Cards = ({products, category, subCategory}: {products:Product[], category: string, subCategory: string}) => {
   return (
     <div className='flex flex-wrap gap-5 justify-between p-5'>
-        {params.map(({ id, name, description, price, imageUrl, category, subCategory, }) => {
+        {products.map(({ description, id, name, price,slug}) => {
           return (
+            <Link href={`/${category}/${subCategory}/${slug}`}>
             <div key={id} className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 mb-4">
-              <div className="border-solid border-2 font-bold rounded-xl p-5 cursor-pointer"
-              onClick={()=>router.push(`/porduct-details?category=${category}&subCategory${subCategory}&`)}>
-                <img src={imageUrl} alt={name} className="w-full h-32 object-cover mb-2" />
+              <div className="border-solid border-2 font-bold rounded-xl p-5 cursor-pointer">
+                {/* <img src={imageUrl} alt={name} className="w-full h-32 object-cover mb-2" /> */}
                 
                 <div>{name}</div>  
               </div>
@@ -26,8 +27,8 @@ const Cards = ({params}) => {
               <ButtonMain name= "Add to Cart" />
               
               </div>
-
             </div>
+            </Link>
           )
         })}
       </div>

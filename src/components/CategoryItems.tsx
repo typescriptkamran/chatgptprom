@@ -1,20 +1,24 @@
 import Cards from '@/components/Cards';
-import Categories from '@/data/Categories';
+import {Category, categories} from '@/data/Categories';
 
 
 
-const CategoryItems = ({params}) => {
+const CategoryItems = ({categoryParam, subCategoryParam}: {categoryParam: string, subCategoryParam: string}) => {
 
-    const Data = Categories.find((elem)=>elem.path === params.category)?.subCategories.find((elem)=>elem.path === params.subCategory)?.items
+    const products = categories.find((category: Category)=>category.slug === categoryParam)?.subcategories.find((Subcategory)=>Subcategory.slug === subCategoryParam)?.products
     
-  
-      return (
+      if (products) {
+        return (
       
-      <div className='w-full h-screen'>
-  
-        <Cards params={Data} />
-      </div>
-    )
+          <div className='w-full h-screen'>
+      
+            <Cards products={products} category={categoryParam} subCategory={subCategoryParam} />
+          </div>
+        )
+      }
+      return (
+        <h1>NO PRODUCTS</h1>
+      );
   }
   
 

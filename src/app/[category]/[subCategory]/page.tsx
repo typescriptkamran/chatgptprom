@@ -1,13 +1,12 @@
 import CategoryItems from '@/components/CategoryItems'
 import React from 'react'
 
-export default function Data({params}) {
-    const {category, subCategory} = params
+export default function Data({params: {category, subCategory}}: {params: {category:string, subCategory: string}}) {
   return (
     <div>
       {category}/{subCategory}
 
-        <CategoryItems params ={params}/>
+        <CategoryItems categoryParam={category} subCategoryParam={subCategory}/>
     </div>
   )
 }
