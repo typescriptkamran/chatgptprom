@@ -17,6 +17,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  let sidbar = <Sidebar />
+
   return (
     <html lang="en">
       <body className='w-full h-full wp-5 m-5'>

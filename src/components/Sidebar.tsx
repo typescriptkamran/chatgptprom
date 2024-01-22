@@ -18,11 +18,11 @@ const Sidebar = () => {
           return (
             <AccordionItem key={id} value = {`item-${index}`}>
               <AccordionTrigger>{name}</AccordionTrigger>
-              
-                {subcategories.map(({categoryName, id, slug: SubSlug}:Subcategory )=> {
+                {/* {JSON.stringify(subcategories)} */}
+                {subcategories.map(({name, id, slug: SubSlug}:Subcategory )=> {
                   return (<AccordionContent key={id}>
                     <Link href={`/${slug}/${SubSlug}`}>
-                    {categoryName}
+                    {name}
                     </Link>      
                     </AccordionContent>)
                 })}
