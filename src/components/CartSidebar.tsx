@@ -1,35 +1,13 @@
 'use client'
-import { ShoppingCart, Bell } from 'lucide-react';
-import Link from 'next/link';
 import React from 'react';
 import { useCart } from './CartContext';
-import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
 
-
-function NavBar() {
+const CartSidebar = () => {
   const { cart, removeFromCart, clearCart, increaseQuantity, decreaseQuantity, getTotal } = useCart();
 
-
-  // Calculate the total quantity of items in the cart
-  const totalItemsInCart = cart.reduce((total, item) => total + item.quantity, 0);
-
   return (
-    <div className='flex bg-slate-900 py-1 px-2 items-center justify-between text-white'>
-      <Link href="{}">
-        <p>Gifts Bouquets</p>
-      </Link>
-      <div className='flex items-center gap-5'>
-        <div className='flex gap-1'>
-        <Popover>
-  <PopoverTrigger><ShoppingCart />
-          <span>{totalItemsInCart}</span>
-        </PopoverTrigger>
-  <PopoverContent><h2 className="text-2xl font-semibold mb-4">Shopping Cart</h2>
+    <div className="fixed right-0  h-full w-72 bg-white p-4 shadow-lg overflow-y-auto">
+      <h2 className="text-2xl font-semibold mb-4">Shopping Cart</h2>
       {cart.length === 0 ? (
         <p className="text-gray-500">Your cart is empty.</p>
       ) : (
@@ -83,27 +61,9 @@ function NavBar() {
             </button>
           </div>
         </div>
-      )}</PopoverContent>
-</Popover>
-
-          </div>
-        <div className='flex gap-1'>
-          <Bell />
-          <span className='bg-red-500 rounded-full absolute px-2 mt-[-10px] ml-3'>5</span>
-        </div>
-        <Avatarimg />
-      </div>
+      )}
     </div>
   );
-}
+};
 
-export default NavBar;
-
-export function Avatarimg() {
-  return (
-    <Avatar>
-      <AvatarImage src='https://github.com/shadcn.png' height={36} width={36} alt='@shadcn' className='border-2 border-white rounded-full' />
-      <AvatarFallback>CN</AvatarFallback>
-    </Avatar>
-  );
-}
+export default CartSidebar;

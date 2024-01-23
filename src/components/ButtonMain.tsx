@@ -1,9 +1,10 @@
+"use client"
 import React from 'react'
 import { Button } from './ui/button'
 
-function ButtonMain({name}) {
+function ButtonMain({name, onClick}) {
   return (
-    <Button>{name}</Button>
+    <Button onClick={onClick}>{name}</Button>
   )
 }
 

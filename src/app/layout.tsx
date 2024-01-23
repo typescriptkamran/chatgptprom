@@ -1,9 +1,12 @@
+"use clientSide"
 import Nav from '@/components/Nav'
 import type { Metadata } from 'next'
 import { Inter, Single_Day } from 'next/font/google'
 import './globals.css'
 import Sidebar from '@/components/Sidebar'
 import NavBar from '@/components/NavBar'
+import { CartProvider } from '@/components/CartContext'
+import CartSidebar from '@/components/CartSidebar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,19 +20,26 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  let sidbar = <Sidebar />
-
   return (
     <html lang="en">
       <body className='w-full h-full wp-5 m-5'>
-       <div className='p-5 m-5'>
+       <div className='flex flex-col p-5 m-5'>
+       <CartProvider>
         <NavBar />
-        {/* <Nav /> */}
+        
         <div className='flex gap-1'>
         <Sidebar />
+        
+
 
         {children}
+        
+        
+        
+        
+
         </div>
+        </CartProvider>
        </div>
       </body>
     </html>
