@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-
+import { SaveCategoriesData } from '@/api/categories';
 interface Category {
   id: number;
   name: string;
@@ -36,13 +36,7 @@ const CategoryForm = (): JSX.Element => {
     setCategories([...categories, newCategory]);
 
     // Save categories to JSON file
-    await fetch('/api/categories', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify([...categories, newCategory]),
-    });
+
 
     // Clear the input field
     setCategoryName('');
