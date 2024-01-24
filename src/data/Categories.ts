@@ -20,6 +20,7 @@ interface Product {
   price: number;
   description: string;
   imageUrl: string;
+  
 }
 
 interface GiftCategory extends Category {}
