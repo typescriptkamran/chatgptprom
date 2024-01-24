@@ -3,8 +3,8 @@
 import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 
 // Define Product type
-interface Product {
-  id: string;
+export interface CartProduct {
+  id: number;
   name: string;
   price: number;
   slug: string;
@@ -15,12 +15,12 @@ interface Product {
 
 // Define CartContext type
 interface CartContextType {
-  cart: Product[];
-  addToCart: (product: Product) => void;
-  removeFromCart: (productId: string) => void;
+  cart: CartProduct[];
+  addToCart: (product: CartProduct) => void;
+  removeFromCart: (productId: number) => void;
   clearCart: () => void;
-  increaseQuantity: (productId: string) => void;
-  decreaseQuantity: (productId: string) => void;
+  increaseQuantity: (productId: number) => void;
+  decreaseQuantity: (productId: number) => void;
   getTotal: () => number;
 }
 
@@ -33,7 +33,7 @@ interface CartProviderProps {
 }
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {  
-  const [cart, setCart] = useState<Product[]>([]);
+  const [cart, setCart] = useState<CartProduct[]>([]);
 
   // Load cart from local storage on mount
   useEffect(() => {
@@ -43,7 +43,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     }
   }, []); // Only run on mount, not on every update
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: CartProduct) => {
     setCart((prevCart) => {
       const existingProduct = prevCart.find((item) => item.id === product.id);
 
@@ -59,7 +59,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     });
   };
 
-  const removeFromCart = (productId: string) => {
+  const removeFromCart = (productId: number) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
   };
 
@@ -67,7 +67,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     setCart([]);
   };
 
-  const increaseQuantity = (productId: string) => {
+  const increaseQuantity = (productId: number) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
         item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
@@ -75,7 +75,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     );
   };
 
-  const decreaseQuantity = (productId: string) => {
+  const decreaseQuantity = (productId: number) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
         item.id === productId ? { ...item, quantity: Math.max(1, item.quantity - 1) } : item

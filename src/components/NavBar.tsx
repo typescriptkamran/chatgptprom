@@ -26,8 +26,8 @@ function NavBar() {
       <div className='flex items-center gap-5'>
         <div className='flex gap-1'>
         <Popover>
-  <PopoverTrigger><ShoppingCart />
-          <span>{totalItemsInCart}</span>
+  <PopoverTrigger className='flex'><ShoppingCart />
+          <span className='bg-green-500 rounded-full absolute px-2 mt-[-10px] ml-3'>{totalItemsInCart}</span>
         </PopoverTrigger>
   <PopoverContent><h2 className="text-2xl font-semibold mb-4">Shopping Cart</h2>
       {cart.length === 0 ? (

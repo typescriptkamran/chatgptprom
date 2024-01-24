@@ -6,8 +6,6 @@ import './globals.css'
 import Sidebar from '@/components/Sidebar'
 import NavBar from '@/components/NavBar'
 import { CartProvider } from '@/components/CartContext'
-import CartSidebar from '@/components/CartSidebar'
-
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
