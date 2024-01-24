@@ -1,5 +1,3 @@
-"use clientSide"
-import Nav from '@/components/Nav'
 import type { Metadata } from 'next'
 import { Inter, Single_Day } from 'next/font/google'
 import './globals.css'
