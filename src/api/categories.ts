@@ -2,12 +2,20 @@
 'use server'
 import fs from 'fs';
 import path from 'path';
+import { Category } from '@/components/CategoryForm';
+
 
 const dataFilePath = './data/Category.json';
 
-export const SaveCategoriesData = async (categories) => {
+const saveCustomerData = (data: Customer[]) => {
+  const jsonData = JSON.stringify(data, null, 2);
+  fs.writeFileSync('customerData.json', jsonData, 'utf-8');
+}
+
+export const SaveCategoriesData = async (categories: Category[]) => {
   try {
-    await fs.writeFile(path.join(process.cwd(), dataFilePath), JSON.stringify(categories, null, 2));
+    const jsonData = JSON.stringify(categories, null, 2);
+  fs.writeFileSync('CategoriesData.json', jsonData, 'utf-8');
     console.log('Categories data saved successfully.');
   } catch (error) {
     console.error('Error saving categories data:', error);

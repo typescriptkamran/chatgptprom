@@ -3,7 +3,7 @@
 import { SaveCategoriesData, LoadCategoriesData } from '@/api/categories';
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 
-interface Category {
+export interface Category {
   id: number;
   name: string;
   slug: string;
