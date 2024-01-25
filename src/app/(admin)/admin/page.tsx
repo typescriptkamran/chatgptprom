@@ -1,21 +1,27 @@
-'use client'
-import AdminSidebar from '@/components/AdminSidebar';
-// pages/admin.js
-import { useState } from 'react';
+// 'use client'  // Assuming this is not needed or already set up
 
+import AdminSidebar from '@/components/AdminSidebar';
+
+// pages/admin.js
 const Admin = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
   const handleLogin = () => {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
     if (username === 'admin' && password === 'admin') {
+      localStorage.setItem('isLoggedIn', 'true');
       setMessage('Login successful. Welcome, admin!');
-      setIsLoggedIn(true);
+      window.location.reload(); // Refresh the page to show authenticated content
     } else {
       setMessage('Invalid username or password. Please try again.');
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.setItem('isLoggedIn', 'false');
+    window.location.reload(); // Refresh the page to show the login form
   };
 
   return (
@@ -27,8 +33,7 @@ const Admin = () => {
             <label className="block text-gray-700">Username:</label>
             <input
               type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              id="username"
               className="w-full mt-1 p-2 border rounded"
             />
           </div>
@@ -36,8 +41,7 @@ const Admin = () => {
             <label className="block text-gray-700">Password:</label>
             <input
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              id="password"
               className="w-full mt-1 p-2 border rounded"
             />
           </div>
@@ -52,12 +56,18 @@ const Admin = () => {
       ) : (
         <div className="flex text-center">
           <div>
-          <AdminSidebar />
+            <AdminSidebar />
           </div>
           <div>
-          <h1 className="text-2xl font-bold mb-4">Welcome, admin!</h1>
-          {/* Add your page content here */}
-          <p>Your admin content goes here.</p>
+            <h1 className="text-2xl font-bold mb-4">Welcome, admin!</h1>
+            {/* Add your page content here */}
+            <p>Your admin content goes here.</p>
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 text-white p-2 rounded hover:bg-red-600"
+            >
+              Logout
+            </button>
           </div>
         </div>
       )}

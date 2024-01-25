@@ -1,36 +1,29 @@
+// app/api/categories.js
 'use server'
-// pages/api/categories.ts
-import { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 import path from 'path';
 
-const categoriesFilePath = path.join(process.cwd(), 'data', 'categories.json');
+const dataFilePath = './data/Category.json';
 
-const getCategories = (): any[] => {
-  const categoriesData = fs.readFileSync(categoriesFilePath, 'utf-8');
-  return JSON.parse(categoriesData);
+export const SaveCategoriesData = async (categories) => {
+  try {
+    await fs.writeFile(path.join(process.cwd(), dataFilePath), JSON.stringify(categories, null, 2));
+    console.log('Categories data saved successfully.');
+  } catch (error) {
+    console.error('Error saving categories data:', error);
+  }
 };
 
-export const saveCategories = (categories: any[]): void => {
-  fs.writeFileSync(categoriesFilePath, JSON.stringify(categories));
+export const LoadCategoriesData = async () => {
+  try {
+    const data = await fs.readFile(path.join(process.cwd(), dataFilePath), 'utf-8');
+    return JSON.parse(data);
+  } catch (error) {
+    // If the file doesn't exist, return an empty array
+    if (error.code === 'ENOENT') {
+      return [];
+    }
+    console.error('Error loading categories data:', error);
+    throw error;
+  }
 };
-
-export const SaveCategoriesData = (data: any[]) => {
-    const jsonData = JSON.stringify(data, null, 2);
-    fs.writeFileSync('./data/Category.json', jsonData, 'utf-8');
-  }
-
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse): void {
-  if (req.method === 'GET') {
-    const categories = getCategories();
-    res.status(200).json(categories);
-  } else if (req.method === 'POST') {
-    const { body } = req;
-    const categories = getCategories();
-    saveCategories(body);
-    res.status(200).json(body);
-  } else {
-    res.status(405).end(); // Method Not Allowed
-  }
-}
