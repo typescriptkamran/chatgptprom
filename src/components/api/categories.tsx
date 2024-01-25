@@ -23,6 +23,19 @@ export default function handler(req: NextApiRequest, res: NextApiResponse): void
     const categories = getCategories();
     saveCategories(body);
     res.status(200).json(body);
+  } else if (req.method === 'DELETE') {
+    const { id } = req.query;
+    const categoryId = parseInt(id as string, 10);
+
+    if (isNaN(categoryId)) {
+      res.status(400).json({ error: 'Invalid category ID' });
+      return;
+    }
+
+    const categories = getCategories();
+    const updatedCategories = categories.filter((category) => category.id !== categoryId);
+    saveCategories(updatedCategories);
+    res.status(200).json({ success: true });
   } else {
     res.status(405).end(); // Method Not Allowed
   }

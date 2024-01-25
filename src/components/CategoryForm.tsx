@@ -51,8 +51,32 @@ const CategoryForm = (): JSX.Element => {
     alert(`Update category with id ${categoryId}`);
   };
 
+  const handleRemoveCategory = async (categoryId: number): Promise<void> => {
+    const updatedCategories = categories.filter((category) => category.id !== categoryId);
+
+    // Update state with the updated categories
+    setCategories(updatedCategories);
+
+    // Save updated categories to JSON file on the server
+    await SaveCategoriesData(updatedCategories);
+  };
+
+  const handleSaveChanges = async (): Promise<void> => {
+    // Save categories to JSON file on the server
+    await SaveCategoriesData(categories);
+  };
+
+
+
   return (
-    <div>
+      <div>
+      <button
+        onClick={handleSaveChanges}
+        className="absolute right-4 bg-green-500 text-white p-2 rounded"
+      >
+        Save Changes
+      </button>
+
       <form onSubmit={handleAddCategory} className="mb-4">
         <label>
           Category Name:
@@ -82,6 +106,12 @@ const CategoryForm = (): JSX.Element => {
                 >
                   Update
                 </button>
+                <button
+                  onClick={(): Promise<void> => handleRemoveCategory(category.id)}
+                  className="ml-2 bg-red-500 text-white p-2 rounded"
+                >
+                  Remove
+                </button>
               </li>
             ))}
           </ul>
@@ -90,5 +120,6 @@ const CategoryForm = (): JSX.Element => {
     </div>
   );
 };
+    
 
 export default CategoryForm;
