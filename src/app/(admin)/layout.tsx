@@ -6,10 +6,13 @@ export default function AdminLayout({
   children: React.ReactNode
 }) {
   return   (
-  <div className=" w-full h-screen flex flex-col">
+  <div className=" w-full h-screen flex ">
   <section>
-  <Nav />
+  <Nav / >
+<div className="w-full h-screen">
   {children}
+  </div>
+
   </section>
   </div>
   )

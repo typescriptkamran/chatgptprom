@@ -18,6 +18,8 @@ const ProductForm = (): JSX.Element => {
   const [productPrice, setProductPrice] = useState<number>(0);
   const [productImageUrl, setProductImageUrl] = useState<string>('');
   const [productStatus, setProductStatus] = useState<boolean>(false);
+  const [productImageFile, setProductImageFile] = useState<File | null>(null);
+
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
@@ -44,7 +46,7 @@ const ProductForm = (): JSX.Element => {
 
   const handleAddProduct = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
-
+  
     const newProduct: Product = {
       id: products.length + 1,
       name: productName,
@@ -54,16 +56,28 @@ const ProductForm = (): JSX.Element => {
       shortDesc: productShortDesc,
       longDesc: productLongDesc,
       price: productPrice,
-      imageUrl: productImageUrl,
+      imageUrl: productImageFile ? `/public/products/${productName.toLowerCase().replace(/\s+/g, '-')}.jpg` : '',
       status: productStatus,
     };
-
+  
     // Update state with the new product
     setProducts([...products, newProduct]);
-
+  
     // Save products to JSON file on the server
     await SaveProductData([...products, newProduct]);
-
+  
+    // Save product image to the public folder
+    if (productImageFile) {
+      const formData = new FormData();
+      formData.append('image', productImageFile, `${newProduct.slug}.jpg`);
+      
+      // Assuming you have an API endpoint for uploading images
+      await fetch('/api/uploadProductImage', {
+        method: 'POST',
+        body: formData,
+      });
+    }
+  
     // Clear the input fields
     setProductName('');
     setProductCategory('');
@@ -73,6 +87,7 @@ const ProductForm = (): JSX.Element => {
     setProductPrice(0);
     setProductImageUrl('');
     setProductStatus(false);
+    setProductImageFile(null);
   };
 
   const handleUpdateProduct = async (productId: number): Promise<void> => {
@@ -153,6 +168,7 @@ const ProductForm = (): JSX.Element => {
             ))}
           </select>
         </label>
+
         <label className="ml-2">
           Short Description:
           <input
@@ -188,6 +204,19 @@ const ProductForm = (): JSX.Element => {
             required
           />
         </label>
+        <label className="ml-2">
+  Product Image:
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e: ChangeEvent<HTMLInputElement>): void => {
+      const file = e.target.files && e.target.files[0];
+      setProductImageFile(file);
+    }}
+    className="ml-2 p-2 border rounded"
+    required
+  />
+</label>
         <label className="ml-2">
           Image URL:
           <input
