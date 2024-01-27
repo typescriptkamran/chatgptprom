@@ -251,7 +251,7 @@ const ProductForm = (): JSX.Element => {
           <ul>
             {products.map((product) => (
               <li key={product.id}>
-                {product.name} - {product.slug}{' '}
+                {product.name} - {product.slug} - {product.status}
                 <button
                   onClick={(): Promise<void> => handleUpdateProduct(product.id)}
                   className="ml-2 bg-yellow-500 text-white p-2 rounded"

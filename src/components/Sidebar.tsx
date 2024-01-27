@@ -21,7 +21,7 @@ const Sidebar = () => {
                 {/* {JSON.stringify(subcategories)} */}
                 {subcategories.map(({name, id, slug: SubSlug}:Subcategory )=> {
                   return (<AccordionContent key={id}>
-                    <Link href={`/${slug}/${SubSlug}`}>
+                    <Link href={`/shop/${slug}/${SubSlug}`}>
                     {name}
                     </Link>      
                     </AccordionContent>)

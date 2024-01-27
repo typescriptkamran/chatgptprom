@@ -4,5 +4,11 @@
     "name": "Gifts for Her",
     "slug": "gifts-for-her",
     "category": "gifts"
+  },
+  {
+    "id": 2,
+    "name": "For Him",
+    "slug": "for-him",
+    "category": "gifts"
   }
 ]

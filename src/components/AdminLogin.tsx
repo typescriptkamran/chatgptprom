@@ -72,9 +72,7 @@ const AdminLogin = () => {
         </div>
       ) : (
         <div className="w-full flex text-center">
-          <div>
-            <AdminSidebar />
-          </div>
+          
           <div>
             <h1 className="w-full h-screentext-2xl font-bold mb-4">Welcome, admin!</h1>
             {/* Add your page content here */}
