@@ -1,14 +1,16 @@
 [
   {
     "id": 1,
-    "name": "asdas",
+    "name": "hello",
+    "slug": "hello",
     "category": "gifts",
+    "catSlug": "gifts",
     "subCategory": "Gifts for Her",
-    "slug": "asdas",
-    "shortDesc": "asdsad",
-    "longDesc": "adsadsadsadasdsad",
-    "price": 0,
-    "imageUrl": "/public/products/asdas.jpg",
-    "status": false
+    "subSlug": "gifts-for-her",
+    "shortDesc": "asdfds",
+    "longDesc": "asdfadsf",
+    "price": 22,
+    "imageUrl": "/products/",
+    "status": true
   }
 ]

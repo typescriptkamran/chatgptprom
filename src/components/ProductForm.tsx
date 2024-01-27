@@ -1,13 +1,13 @@
 'use client'
 // app/pages/ProductForm.tsx
+import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { SaveProductData, LoadProductData } from '@/api/Products';
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import {  LoadCategoriesData } from '@/api/categories';
-import {  LoadSubCategoriesData } from '@/api/SubCategories';
+import { LoadCategoriesData } from '@/api/categories';
+import { LoadSubCategoriesData } from '@/api/SubCategories';
 import { Category } from './CategoryForm';
 import { SubCategory } from './SubCategoryForm';
 import { Product } from '@/api/Products';
-
+import { generateSlug } from '@/utlis/slug';
 
 const ProductForm = (): JSX.Element => {
   const [productName, setProductName] = useState<string>('');
@@ -18,8 +18,6 @@ const ProductForm = (): JSX.Element => {
   const [productPrice, setProductPrice] = useState<number>(0);
   const [productImageUrl, setProductImageUrl] = useState<string>('');
   const [productStatus, setProductStatus] = useState<boolean>(false);
-  const [productImageFile, setProductImageFile] = useState<File | null>(null);
-
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
@@ -46,38 +44,39 @@ const ProductForm = (): JSX.Element => {
 
   const handleAddProduct = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
-  
+
+    // Find selected category and subcategory based on names
+    const selectedCategory = categories.find((category) => category.name === productCategory);
+    const selectedSubCategory = subCategories.find((subCategory) => subCategory.name === productSubCategory);
+
+    // Generate slugs for category and subcategory
+    const categorySlug = selectedCategory ? generateSlug(selectedCategory.name) : '';
+    const subCategorySlug = selectedSubCategory ? generateSlug(selectedSubCategory.name) : '';
+
+    // Get the file name from the image URL (assumes it's in the public folder)
+    const imageFileName = productImageUrl ? productImageUrl.split('/').pop() : '';
+
     const newProduct: Product = {
       id: products.length + 1,
       name: productName,
+      slug: generateSlug(productName),
       category: productCategory,
+      catSlug: categorySlug,
       subCategory: productSubCategory,
-      slug: productName.toLowerCase().replace(/\s+/g, '-'),
+      subSlug: subCategorySlug,
       shortDesc: productShortDesc,
       longDesc: productLongDesc,
       price: productPrice,
-      imageUrl: productImageFile ? `/public/products/${productName.toLowerCase().replace(/\s+/g, '-')}.jpg` : '',
+      imageUrl: `/products/${imageFileName}`,
       status: productStatus,
     };
-  
+
     // Update state with the new product
     setProducts([...products, newProduct]);
-  
+
     // Save products to JSON file on the server
     await SaveProductData([...products, newProduct]);
-  
-    // Save product image to the public folder
-    if (productImageFile) {
-      const formData = new FormData();
-      formData.append('image', productImageFile, `${newProduct.slug}.jpg`);
-      
-      // Assuming you have an API endpoint for uploading images
-      await fetch('/api/uploadProductImage', {
-        method: 'POST',
-        body: formData,
-      });
-    }
-  
+
     // Clear the input fields
     setProductName('');
     setProductCategory('');
@@ -87,7 +86,32 @@ const ProductForm = (): JSX.Element => {
     setProductPrice(0);
     setProductImageUrl('');
     setProductStatus(false);
-    setProductImageFile(null);
+  };
+
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
+    const fileInput = e.target;
+    const file = fileInput.files && fileInput.files[0];
+
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setProductImageUrl(data.imageUrl);
+        } else {
+          console.error('Error uploading file:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    }
   };
 
   const handleUpdateProduct = async (productId: number): Promise<void> => {
@@ -119,8 +143,8 @@ const ProductForm = (): JSX.Element => {
         Save Changes
       </button>
 
-      <form onSubmit={handleAddProduct} className="mb-4">
-        <label>
+      <form onSubmit={handleAddProduct} className="flex flex-col gap-2 mb-4">
+      <label>
           Product Name:
           <input
             type="text"
@@ -134,7 +158,9 @@ const ProductForm = (): JSX.Element => {
           Select Category:
           <select
             value={productCategory}
-            onChange={(e: ChangeEvent<HTMLSelectElement>): void => setProductCategory(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLSelectElement>): void =>
+              setProductCategory(e.target.value)
+            }
             className="ml-2 p-2 border rounded"
             required
           >
@@ -205,29 +231,19 @@ const ProductForm = (): JSX.Element => {
           />
         </label>
         <label className="ml-2">
-  Product Image:
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e: ChangeEvent<HTMLInputElement>): void => {
-      const file = e.target.files && e.target.files[0];
-      setProductImageFile(file);
-    }}
-    className="ml-2 p-2 border rounded"
-    required
-  />
-</label>
-        <label className="ml-2">
-          Image URL:
-          <input
-            type="text"
-            value={productImageUrl}
-            onChange={(e: ChangeEvent<HTMLInputElement>): void =>
-              setProductImageUrl(e.target.value)
-            }
-            className="ml-2 p-2 border rounded"
-            required
-          />
+          Product Image:
+          <div className="flex gap-2 items-center">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="ml-2 p-2 border rounded"
+              required
+            />
+            {productImageUrl && (
+              <img src={productImageUrl} alt="Product Preview" className="w-16 h-16 object-cover rounded" />
+            )}
+          </div>
         </label>
         <label className="ml-2">
           Status:
@@ -274,5 +290,3 @@ const ProductForm = (): JSX.Element => {
 };
 
 export default ProductForm;
-
-

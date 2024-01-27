@@ -1,5 +1,15 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = { images: {
+
+const nextConfig = {
+   rewrites: async () => {
+    return [
+      {
+        source: "/uploads/:path*",
+        destination: "/public/:path*", // Adjust this path based on your project structure
+      },
+    ];
+   },
+   images: {
     remotePatterns: [
       {
         protocol: 'https',
@@ -7,7 +17,11 @@ const nextConfig = { images: {
         // port: '',
         // pathname: '/account123/**',
       },
+      
     ],
   },
-}
+};
+
+
+
 module.exports = nextConfig

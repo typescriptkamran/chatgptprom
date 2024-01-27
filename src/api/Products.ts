@@ -9,9 +9,11 @@ const dataFilePath = './src/data/ProductData.json';
 export interface Product {
     id: number;
     name: string;
-    category: string;
-    subCategory: string;
     slug: string;
+    category: string;
+    catSlug: string
+    subCategory: string;
+    subSlug: string;
     shortDesc: string;
     longDesc: string;
     price: number;
