@@ -91,20 +91,20 @@ const ProductForm = (): JSX.Element => {
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
     const fileInput = e.target;
     const file = fileInput.files && fileInput.files[0];
-
+  
     if (file) {
       const formData = new FormData();
       formData.append('file', file);
-
+  
       try {
         const response = await fetch('/api/upload', {
           method: 'POST',
           body: formData,
         });
-
+  
         if (response.ok) {
           const data = await response.json();
-          setProductImageUrl(data.imageUrl);
+          setProductImageUrl(`/products/${data.fileName}`);
         } else {
           console.error('Error uploading file:', response.statusText);
         }
@@ -113,7 +113,7 @@ const ProductForm = (): JSX.Element => {
       }
     }
   };
-
+  
   const handleUpdateProduct = async (productId: number): Promise<void> => {
     // Placeholder logic, update based on your actual requirements
     alert(`Update product with id ${productId}`);
@@ -231,20 +231,24 @@ const ProductForm = (): JSX.Element => {
           />
         </label>
         <label className="ml-2">
-          Product Image:
-          <div className="flex gap-2 items-center">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="ml-2 p-2 border rounded"
-              required
-            />
-            {productImageUrl && (
-              <img src={productImageUrl} alt="Product Preview" className="w-16 h-16 object-cover rounded" />
-            )}
-          </div>
-        </label>
+  Product Image:
+  <div className="flex gap-2 items-center">
+    <input
+      type="file"
+      accept="image/*"
+      onChange={handleFileChange}
+      className="ml-2 p-2 border rounded"
+      required
+    />
+    {productImageUrl ? (
+      <img src={productImageUrl} alt="Product Preview" className="w-16 h-16 object-cover rounded" />
+    ) : (
+      <div className="w-16 h-16 border rounded bg-gray-200 flex items-center justify-center">
+        No Image
+      </div>
+    )}
+  </div>
+</label>
         <label className="ml-2">
           Status:
           <input

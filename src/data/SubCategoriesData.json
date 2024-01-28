@@ -10,5 +10,11 @@
     "name": "For Him",
     "slug": "for-him",
     "category": "gifts"
+  },
+  {
+    "id": 3,
+    "name": "my name",
+    "slug": "my-name",
+    "category": "gifts"
   }
 ]

@@ -12,5 +12,33 @@
     "price": 22,
     "imageUrl": "/products/",
     "status": true
+  },
+  {
+    "id": 2,
+    "name": "aii",
+    "slug": "aii",
+    "category": "Bouquets",
+    "catSlug": "bouquets",
+    "subCategory": "Gifts for Her",
+    "subSlug": "gifts-for-her",
+    "shortDesc": "adfasd",
+    "longDesc": "sdfasdfasfd",
+    "price": 22,
+    "imageUrl": "/products/",
+    "status": true
+  },
+  {
+    "id": 3,
+    "name": "heee",
+    "slug": "heee",
+    "category": "Bouquets",
+    "catSlug": "bouquets",
+    "subCategory": "For Him",
+    "subSlug": "for-him",
+    "shortDesc": "eese",
+    "longDesc": "serer",
+    "price": 22,
+    "imageUrl": "/products/",
+    "status": true
   }
 ]
